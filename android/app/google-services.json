@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "165874514340",
+    "project_id": "chatappwithpushnotificat-7dee7",
+    "storage_bucket": "chatappwithpushnotificat-7dee7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165874514340:android:11c1544ed5479948bf6931",
+        "android_client_info": {
+          "package_name": "com.example.chat_with_push_notification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "165874514340-uc96bmhldg2bc8krqbju0ck005ji1so9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEBPG7KF_r3hU8gJRHBEEBH8Bv2pOkP2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "165874514340-uc96bmhldg2bc8krqbju0ck005ji1so9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
