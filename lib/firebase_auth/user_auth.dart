@@ -3,6 +3,7 @@ import 'package:chat_with_push_notification/push_notification/firebase_helper.da
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserAuth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -18,6 +19,10 @@ class UserAuth {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       String userId = userCredential.user!.uid;
+      SharedPreferences usernamePrefs = await SharedPreferences.getInstance();
+      debugPrint("username::");
+      debugPrint(usernamePrefs.getString("username").toString());
+      usernamePrefs.setString("username", username);
       await _userFirebaseFirestore.doc(userId).set({
         "userID": userId,
         "username": username,
@@ -30,9 +35,12 @@ class UserAuth {
   }
 
   Future userLogin(String email, String password) async {
+    SharedPreferences namePrefs = await SharedPreferences.getInstance();
+
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
+      await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .whenComplete(() => namePrefs.getString("username"));
     } on FirebaseAuthException catch (error) {
       debugPrint("something happened:\t$error");
       _customMethods.toast(text: "\t\t\tsomething happened:\n$error");

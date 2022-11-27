@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../push_notification/firebase_helper.dart';
 import '../../widgets/send_messages.dart';
@@ -17,12 +18,18 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final FirebaseAuth _authStateFirebase = FirebaseAuth.instance;
+  String username = "hello";
+  Future getUsername() async {
+    SharedPreferences userPrefs = await SharedPreferences.getInstance();
+    username = userPrefs.getString("username")!;
+  }
+
   @override
   void initState() {
     FirebaseHelper firebaseHelper = FirebaseHelper();
     firebaseHelper.setForegroundChannel();
     // FirebaseMessaging.onMessage.listen(firebaseHelper.showFlutterNotification);
-
+    getUsername();
     // TODO: implement initState
     super.initState();
   }
@@ -44,8 +51,13 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Scaffold(
           appBar: AppBar(
             title: Text(
-              "Push Notification Chat App\n\t\t\t\t${_authStateFirebase.currentUser?.email}",
-              style: const TextStyle(color: Colors.black),
+              "Push Notification Chat App\nname:\t$username",
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  color: Colors.black,
+                  decoration: TextDecoration.underline,
+                  decorationColor: Colors.grey.shade400),
             ),
             backgroundColor: Colors.pink.shade400,
             actions: [
@@ -54,6 +66,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   // SharedPreferences userSharedPrefs =
                   //     await SharedPreferences.getInstance();
                   await _authStateFirebase.signOut();
+                  SharedPreferences namePrefs =
+                      await SharedPreferences.getInstance();
+                  namePrefs.remove("username");
+
                   customMethods.toast(text: "user is signed out");
                   // userSharedPrefs.remove("username");
                 },
@@ -151,6 +167,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                 child: data["user_id"] == _currentUserId
                                     ? customMethods.customContainer(
                                         text: data["message"],
+                                        leadingWidget:
+                                            Text("${data["username"]}"),
                                         colors: Colors.pink.shade400,
                                         textColor: Colors.black,
                                         subTitle:
@@ -163,6 +181,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                             left: size.width * 0.38))
                                     : customMethods.customContainer(
                                         text: data["message"],
+                                        leadingWidget:
+                                            Text("${data["username"]}"),
                                         colors: Colors.grey.shade500,
                                         textColor: Colors.black,
                                         bottomRightRadius: 16,
@@ -179,7 +199,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           itemCount: snapshot.data!.docs.length,
                           primary: true,
                           physics: const ScrollPhysics(),
-                          padding: EdgeInsets.only(bottom: size.height * 0.2),
+                          padding: EdgeInsets.only(bottom: size.height * 0.4),
                           reverse: true,
                         ),
                       );
@@ -194,7 +214,7 @@ class _ChatScreenState extends State<ChatScreen> {
     // var dateFromTimeStamp =
     //     DateTime.fromMillisecondsSinceEpoch(timestamp.seconds * 1000);
     // return DateFormat('dd-MM-yyyy hh:mm a').format(dateFromTimeStamp);
-    String date = DateFormat().format(DateTime.parse(timestamp));
+    String date = DateFormat('dd-MM-yyyy').format(DateTime.parse(timestamp));
     // var myDate = DateFormat('dd/MM/yyyy,hh:mm').format(date);
 
     return date;

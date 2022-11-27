@@ -68,6 +68,7 @@ class CustomMethods {
     required double bottomRightRadius,
     required double topLeftRadius,
     required double topRightRadius,
+    Widget? leadingWidget,
   }) {
     return Container(
       width: 220,
@@ -82,6 +83,9 @@ class CustomMethods {
             topRight: Radius.circular(topRightRadius)),
       ),
       child: ListTile(
+        trailing: Chip(
+          label: leadingWidget!,
+        ),
         subtitle: Text(
           subTitle,
           style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
