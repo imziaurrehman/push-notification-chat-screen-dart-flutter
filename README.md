@@ -12,9 +12,6 @@ A few resources to get you started if this is your first Flutter project:
   <tr>
     <td>Login</td>
     <td>Register</td>
-    <td>chat with push notification</td>
-
-
   </tr>
   <tr>
     <td><img src="https://raw.githubusercontent.com/imziaurrehman/push-notification-chat-screen-dart-flutter/main/assets/imgs/login.png" width=270 height=520></td>
